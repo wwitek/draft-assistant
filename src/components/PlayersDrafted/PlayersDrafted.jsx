@@ -4,11 +4,7 @@ import { Container, Row } from "react-bootstrap";
 class PlayersDrafted extends Component {
   state = {};
   render() {
-    return (
-      <Container>
-        <p>PlayersDrafted</p>
-      </Container>
-    );
+    return <p>PlayersDrafted</p>;
   }
 }
 
