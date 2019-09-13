@@ -1,12 +1,21 @@
 import React, { Component } from "react";
 import { Button, Container } from "react-bootstrap";
-
+import "./Player.css";
 class Player extends Component {
+  state = {
+    playerId: this.props.playerId,
+    playerName: this.props.playerName
+  };
+
   render() {
     return (
-      <div className="d-flex bd-highlight example-parent">
-        <div className="p-2 flex-grow-1 bd-highlight col-example">Row</div>
-        <div className="p-2 bd-highlight col-example">Button</div>
+      <div className="d-flex small-font">
+        <div className="flex-grow-1">
+          <div>
+            {this.state.playerId}. {this.state.playerName}
+          </div>
+        </div>
+        <div>Button</div>
       </div>
     );
   }

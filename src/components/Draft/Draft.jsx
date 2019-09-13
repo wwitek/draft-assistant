@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Container, Row } from "react-bootstrap";
+import { Container, Row, Form } from "react-bootstrap";
 import PlayersDrafted from "../PlayersDrafted/PlayersDrafted";
 import PlayersUndrafted from "../PlayersUndrafted/PlayersUndrafted";
 import SplitterLayout from "react-splitter-layout";
@@ -12,8 +12,8 @@ class Draft extends Component {
       <SplitterLayout
         vertical
         primaryIndex={1}
-        secondaryInitialSize={250}
-        secondaryMinSize={250}
+        secondaryInitialSize={200}
+        secondaryMinSize={200}
       >
         <div>
           <PlayersDrafted />

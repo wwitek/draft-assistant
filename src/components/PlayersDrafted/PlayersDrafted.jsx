@@ -1,10 +1,46 @@
 import React, { Component } from "react";
-import { Container, Row } from "react-bootstrap";
+import { Container, Row, ListGroup } from "react-bootstrap";
+import Player from "../Player/Player";
+import "./PlayersDrafted.css";
 
 class PlayersDrafted extends Component {
   state = {};
+
+  scrollToBottom = () => {
+    this.messagesEnd.scrollIntoView({ behavior: "smooth" });
+  };
+
+  componentDidMount() {
+    this.scrollToBottom();
+  }
+
+  componentDidUpdate() {
+    this.scrollToBottom();
+  }
+
   render() {
-    return <p>Pane 1</p>;
+    const players = [];
+    for (var i = 0; i < 50; i++) {
+      players.push(
+        <ListGroup.Item>
+          <Player playerName={"Drafted player"} />
+        </ListGroup.Item>
+      );
+    }
+
+    return (
+      <div>
+        <div>
+          <ListGroup variant="flush">{players}</ListGroup>
+        </div>
+        <div
+          style={{ float: "left", clear: "both" }}
+          ref={el => {
+            this.messagesEnd = el;
+          }}
+        ></div>
+      </div>
+    );
   }
 }
 
