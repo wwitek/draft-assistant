@@ -4,7 +4,7 @@ import { Container, Row } from "react-bootstrap";
 class PlayersDrafted extends Component {
   state = {};
   render() {
-    return <p>PlayersDrafted</p>;
+    return <p>Pane 1</p>;
   }
 }
 

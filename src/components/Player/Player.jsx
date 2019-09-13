@@ -4,9 +4,10 @@ import { Button, Container } from "react-bootstrap";
 class Player extends Component {
   render() {
     return (
-      <Container>
-        <Button>Test button</Button>
-      </Container>
+      <div className="d-flex bd-highlight example-parent">
+        <div className="p-2 flex-grow-1 bd-highlight col-example">Row</div>
+        <div className="p-2 bd-highlight col-example">Button</div>
+      </div>
     );
   }
 }
