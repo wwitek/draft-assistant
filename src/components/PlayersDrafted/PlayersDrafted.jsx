@@ -22,7 +22,7 @@ class PlayersDrafted extends Component {
     const players = [];
     for (var i = 0; i < 50; i++) {
       players.push(
-        <ListGroup.Item>
+        <ListGroup.Item key={i}>
           <Player playerName={"Drafted player"} />
         </ListGroup.Item>
       );
