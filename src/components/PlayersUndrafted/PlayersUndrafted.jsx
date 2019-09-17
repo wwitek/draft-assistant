@@ -7,7 +7,6 @@ import "./PlayersUndrafted.css";
 
 class PlayersUndrafted extends Component {
   state = {
-    playerNames: this.props.players,
     playerFilter: ""
   };
 
@@ -17,21 +16,24 @@ class PlayersUndrafted extends Component {
     });
   }
 
-  getPlayers() {
-    let players = [];
-    let counter = 0;
+  renderPlayers() {
+    let renderedPlayers = [];
     let playerFilter = this.state.playerFilter.toLowerCase();
-    players = this.state.playerNames
-      .filter(function(name) {
+    renderedPlayers = this.props.players
+      .filter(p => {
         if (!playerFilter) return true;
-        return name.toLowerCase().includes(playerFilter);
+        return p.playerName.toLowerCase().includes(playerFilter);
       })
-      .map(name => (
-        <ListGroup.Item key={name}>
-          <Player playerId={++counter} playerName={name} />
+      .map(p => (
+        <ListGroup.Item
+          action
+          key={p.id}
+          onClick={() => this.props.onPlayerPicked(p)}
+        >
+          <Player player={p} />
         </ListGroup.Item>
       ));
-    return players;
+    return renderedPlayers;
   }
 
   render() {
@@ -46,7 +48,7 @@ class PlayersUndrafted extends Component {
           />
         </div>
         <div>
-          <ListGroup variant="flush">{this.getPlayers()}</ListGroup>
+          <ListGroup variant="flush">{this.renderPlayers()}</ListGroup>
         </div>
       </div>
     );

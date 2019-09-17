@@ -4,8 +4,6 @@ import Player from "../Player/Player";
 import "./PlayersDrafted.css";
 
 class PlayersDrafted extends Component {
-  state = {};
-
   scrollToBottom = () => {
     this.messagesEnd.scrollIntoView({ behavior: "smooth" });
   };
@@ -18,20 +16,25 @@ class PlayersDrafted extends Component {
     this.scrollToBottom();
   }
 
-  render() {
-    const players = [];
-    for (var i = 0; i < 50; i++) {
-      players.push(
-        <ListGroup.Item key={i}>
-          <Player playerName={"Drafted player"} />
-        </ListGroup.Item>
-      );
-    }
+  renderPlayers() {
+    let renderedPlayers = [];
+    renderedPlayers = this.props.players.map(p => (
+      <ListGroup.Item
+        action
+        key={p.id}
+        onClick={() => this.props.onPlayerUnpicked(p)}
+      >
+        <Player player={p} />
+      </ListGroup.Item>
+    ));
+    return renderedPlayers;
+  }
 
+  render() {
     return (
       <div>
         <div>
-          <ListGroup variant="flush">{players}</ListGroup>
+          <ListGroup variant="flush">{this.renderPlayers()}</ListGroup>
         </div>
         <div
           style={{ float: "left", clear: "both" }}
