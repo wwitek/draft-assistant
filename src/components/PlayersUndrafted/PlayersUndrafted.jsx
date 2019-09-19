@@ -22,12 +22,12 @@ class PlayersUndrafted extends Component {
     renderedPlayers = this.props.players
       .filter(p => {
         if (!playerFilter) return true;
-        return p.playerName.toLowerCase().includes(playerFilter);
+        return p.Name.toLowerCase().includes(playerFilter);
       })
       .map(p => (
         <ListGroup.Item
           action
-          key={p.id}
+          key={p.Id}
           onClick={() => this.props.onPlayerPicked(p)}
         >
           <Player player={p} />

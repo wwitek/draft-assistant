@@ -21,7 +21,7 @@ class PlayersDrafted extends Component {
     renderedPlayers = this.props.players.map(p => (
       <ListGroup.Item
         action
-        key={p.id}
+        key={p.Id}
         onClick={() => this.props.onPlayerUnpicked(p)}
       >
         <Player player={p} />

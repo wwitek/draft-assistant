@@ -8,7 +8,7 @@ class Player extends Component {
       <div className="d-flex small-font">
         <div className="flex-grow-1">
           <div>
-            {player.id}. {player.playerName}, {player.position}
+            {player.Adp}. {player.Name}, {player.Pos.join(",")}
           </div>
         </div>
         <div>Button</div>
