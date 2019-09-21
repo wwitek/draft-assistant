@@ -5,6 +5,7 @@ import SplitterLayout from "react-splitter-layout";
 import "./App.css";
 import "react-splitter-layout/lib/index.css";
 import { getPlayers } from "../../services/playerService";
+const { ipcRenderer } = window.require("electron");
 
 class App extends Component {
   state = {
@@ -12,42 +13,64 @@ class App extends Component {
     undraftedPlayers: getPlayers()
   };
 
-  playerPicked = p => {
-    console.log("Picked:", p.Name);
-    const draftedPlayers = this.state.draftedPlayers;
-    draftedPlayers.push(p);
-
-    const undraftedPlayers = this.state.undraftedPlayers.filter(
-      player => player.Name !== p.Name
-    );
-
-    this.setState({
-      undraftedPlayers: undraftedPlayers,
-      draftedPlayers: draftedPlayers
+  componentDidMount() {
+    ipcRenderer.on("onReceivedPicks", (event, args) => {
+      args.forEach(pick => {
+        this.pickPlayer(pick.playerId);
+      });
     });
+  }
+
+  pickPlayer(id) {
+    let pickedPlayer = this.state.undraftedPlayers.find(p => p.Id == id);
+    if (pickedPlayer) {
+      console.log("Picked:", pickedPlayer.Name);
+      const draftedPlayers = this.state.draftedPlayers;
+      draftedPlayers.push(pickedPlayer);
+
+      const undraftedPlayers = this.state.undraftedPlayers.filter(
+        player => player.Name !== pickedPlayer.Name
+      );
+
+      this.setState({
+        undraftedPlayers: undraftedPlayers,
+        draftedPlayers: draftedPlayers
+      });
+    }
+  }
+
+  unpickPlayer(id) {
+    let unpickedPlayer = this.state.draftedPlayers.find(p => p.Id === id);
+    if (unpickedPlayer) {
+      let { draftedPlayers } = this.state;
+      if (draftedPlayers.length > 0) {
+        if (draftedPlayers[draftedPlayers.length - 1] === unpickedPlayer) {
+          console.log("Unpicked:", unpickedPlayer.Name);
+          const draftedPlayers = this.state.draftedPlayers.filter(
+            player => player.Name !== unpickedPlayer.Name
+          );
+
+          let undraftedPlayers = this.state.undraftedPlayers;
+          undraftedPlayers.push(unpickedPlayer);
+          undraftedPlayers.sort((a, b) => {
+            return a.Adp > b.Adp ? 1 : -1;
+          });
+
+          this.setState({
+            undraftedPlayers: undraftedPlayers,
+            draftedPlayers: draftedPlayers
+          });
+        }
+      }
+    }
+  }
+
+  playerPicked = p => {
+    this.pickPlayer(p.Id);
   };
 
   playerUnpicked = p => {
-    let { draftedPlayers } = this.state;
-    if (draftedPlayers.length > 0) {
-      if (draftedPlayers[draftedPlayers.length - 1] === p) {
-        console.log("Unpicked:", p.Name);
-        const draftedPlayers = this.state.draftedPlayers.filter(
-          player => player.Name !== p.Name
-        );
-
-        let undraftedPlayers = this.state.undraftedPlayers;
-        undraftedPlayers.push(p);
-        undraftedPlayers.sort((a, b) => {
-          return a.Adp > b.Adp ? 1 : -1;
-        });
-
-        this.setState({
-          undraftedPlayers: undraftedPlayers,
-          draftedPlayers: draftedPlayers
-        });
-      }
-    }
+    this.unpickPlayer(p.Id);
   };
 
   render() {

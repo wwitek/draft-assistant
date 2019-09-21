@@ -1,14 +1,21 @@
 const electron = require("electron");
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
+const ipcMain = electron.ipcMain;
 
 const path = require("path");
 const url = require("url");
+const express = require("express");
+const extensionServer = express();
 
 let mainWindow;
 
 function createWindow() {
-  mainWindow = new BrowserWindow({ width: 800, height: 600 });
+  mainWindow = new BrowserWindow({
+    width: 800,
+    height: 600,
+    webPreferences: { webSecurity: false, nodeIntegration: true }
+  });
 
   const startUrl =
     process.env.ELECTRON_START_URL ||
@@ -26,7 +33,35 @@ function createWindow() {
   });
 }
 
-app.on("ready", createWindow);
+app.on("ready", function() {
+  createWindow();
+
+  extensionServer.use(express.json());
+  extensionServer.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*"); // chrome-extension://ajmlddlkjihjgnnphnjkhoceahpjcfae
+    res.header("Access-Control-Allow-Headers", "Content-Type");
+
+    if ("OPTIONS" === req.method) {
+      res.sendStatus(200);
+    } else {
+      next();
+    }
+  });
+
+  extensionServer.post("/picks", function(req, res) {
+    let receivedPicks = [];
+    req.body.forEach(function(pick) {
+      receivedPicks.push(pick);
+    });
+    console.log(receivedPicks);
+    mainWindow.webContents.send("onReceivedPicks", receivedPicks);
+    res.send("Ok");
+  });
+
+  var server = extensionServer.listen(8787, function() {
+    console.log("Listening...");
+  });
+});
 
 app.on("window-all-closed", function() {
   if (process.platform !== "darwin") {
