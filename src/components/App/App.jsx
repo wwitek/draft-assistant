@@ -4,7 +4,7 @@ import Draft from "./../Draft/Draft";
 import SplitterLayout from "react-splitter-layout";
 import "./App.css";
 import "react-splitter-layout/lib/index.css";
-import Team from "./team";
+import LeagueTable from "./../LeagueTable/LeagueTable";
 const { ipcRenderer } = window.require("electron");
 
 class App extends Component {
@@ -147,7 +147,9 @@ class App extends Component {
             onPlayerUnpicked={this.playerUnpicked}
           />
         </div>
-        <div>Pane 2</div>
+        <div>
+          <LeagueTable teams={this.state.teams} />
+        </div>
       </SplitterLayout>
     );
   }
