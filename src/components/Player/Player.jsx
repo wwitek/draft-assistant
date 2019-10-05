@@ -11,7 +11,7 @@ class Player extends Component {
             {player.Adp}. {player.Name}, {player.Pos.join(",")}
           </div>
         </div>
-        <div>Button</div>
+        <div>{player.Score}</div>
       </div>
     );
   }

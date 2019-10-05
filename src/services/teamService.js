@@ -18,3 +18,7 @@ const teams = [
 export function getTeams() {
   return teams;
 }
+
+function getCategoryScore(category, teams) {}
+
+export function getTeamScore(teamId, teams) {}

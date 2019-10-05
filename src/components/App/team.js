@@ -33,6 +33,43 @@ class Team {
       }, 0);
     }
   }
+
+  getScore(prop, teams, betterLess) {
+    let myScore = teams.length;
+    let myStat = this.getStats(prop);
+    teams.forEach(element => {
+      if (element.pick !== this.pick) {
+        let opponentStat = element.getStats(prop);
+        if (opponentStat > myStat && !betterLess) {
+          myScore--;
+        } else if (opponentStat < myStat && betterLess) {
+          myScore--;
+        }
+      }
+    });
+    return myScore;
+  }
+
+  getTotalScore(teams) {
+    let totalScore = this.getScore("Fg", teams);
+    totalScore += this.getScore("Ff", teams);
+    totalScore += this.getScore("Thr", teams);
+    totalScore += this.getScore("Pts", teams);
+    totalScore += this.getScore("Reb", teams);
+    totalScore += this.getScore("Ast", teams);
+    totalScore += this.getScore("Stl", teams);
+    totalScore += this.getScore("Blk", teams);
+    totalScore += this.getScore("Tov", teams, true);
+    return totalScore;
+  }
+
+  tryPlayer(player, teams) {
+    let currentScore = this.getTotalScore(teams);
+    this.addPlayer(player);
+    let newScore = this.getTotalScore(teams);
+    this.removePlayer(player);
+    return newScore - currentScore;
+  }
 }
 
 export default Team;

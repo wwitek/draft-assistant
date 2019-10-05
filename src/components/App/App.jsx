@@ -68,9 +68,23 @@ class App extends Component {
         const draftedPlayers = this.state.draftedPlayers;
         draftedPlayers.push(pickedPlayer);
 
-        const undraftedPlayers = this.state.undraftedPlayers.filter(
+        let undraftedPlayers = this.state.undraftedPlayers.filter(
           player => player.Name !== pickedPlayer.Name
         );
+
+        if (
+          this.state.pickTable &&
+          this.state.pickTable.length != this.state.currentPick
+        ) {
+          let nextPick = this.state.pickTable[this.state.currentPick];
+          undraftedPlayers.forEach(p => {
+            let score = teams[nextPick.team - 1].tryPlayer(p, teams);
+            p.Score = score;
+          });
+          draftedPlayers.forEach(p => {
+            p.Score = null;
+          });
+        }
 
         this.setState({
           currentPick: this.state.currentPick + 1,
@@ -107,6 +121,12 @@ class App extends Component {
           undraftedPlayers.push(unpickedPlayer);
           undraftedPlayers.sort((a, b) => {
             return a.Adp > b.Adp ? 1 : -1;
+          });
+
+          let nextPick = this.state.pickTable[this.state.currentPick - 1];
+          undraftedPlayers.forEach(p => {
+            let score = teams[nextPick.team - 1].tryPlayer(p, teams);
+            p.Score = score;
           });
 
           this.setState({
