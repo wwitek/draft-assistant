@@ -19,7 +19,27 @@ class PlayersUndrafted extends Component {
   renderPlayers() {
     let renderedPlayers = [];
     let playerFilter = this.state.playerFilter.toLowerCase();
-    renderedPlayers = this.props.players
+
+    var scores = this.props.players.map(function(p) {
+      return p.NoTovScore;
+    });
+    let maxScore = Math.max(...scores);
+
+    let players = [...this.props.players];
+    players.forEach(p => {
+      p.goodPickScale = 0;
+    });
+    players.forEach(p => {
+      if (p.NoTovScore === maxScore) {
+        p.goodPickScale = 1;
+      } else if (p.NoTovScore === maxScore - 1) {
+        p.goodPickScale = 2;
+      } else if (p.NoTovScore === maxScore - 2) {
+        p.goodPickScale = 3;
+      }
+    });
+
+    renderedPlayers = players
       .filter(p => {
         if (!playerFilter) return true;
         return p.Name.toLowerCase().includes(playerFilter);

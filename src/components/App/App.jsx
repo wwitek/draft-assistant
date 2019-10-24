@@ -51,7 +51,9 @@ class App extends Component {
 
   componentDidMount() {
     ipcRenderer.on("onReceivedPicks", (event, args) => {
+      console.log("Received picks. Current pick:", this.state.currentPick);
       args.forEach(pick => {
+        console.log("Received", pick);
         this.pickPlayer(pick.playerId);
       });
     });
@@ -79,7 +81,13 @@ class App extends Component {
           let nextPick = this.state.pickTable[this.state.currentPick];
           undraftedPlayers.forEach(p => {
             let score = teams[nextPick.team - 1].tryPlayer(p, teams);
+            let noTovScore = teams[nextPick.team - 1].tryPlayerWithoutTov(
+              p,
+              teams
+            );
+
             p.Score = score;
+            p.NoTovScore = noTovScore;
           });
           draftedPlayers.forEach(p => {
             p.Score = null;
@@ -96,6 +104,7 @@ class App extends Component {
         console.log(
           `Pick ${currentPick.pick}: Team ${currentPick.team} picked ${pickedPlayer.Name}`
         );
+        console.log(draftedPlayers);
       } else {
         console.log("Error: Cannot pick anymore players. All teams are full");
       }

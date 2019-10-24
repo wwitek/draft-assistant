@@ -1,3 +1,25 @@
 div.small-font {
   font-size: x-small;
 }
+
+div.bold-font {
+  font-weight: bold;
+}
+
+div.good-pick-1 {
+  background-color: gold;
+}
+
+div.good-pick-2 {
+  background-color: silver;
+}
+
+div.good-pick-3 {
+  color: white;
+  background-color: rosybrown;
+}
+
+div.space-margin {
+  padding-right: 5px;
+  padding-left: 5px;
+}
