@@ -3,9 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
+    "@babel/cli": "^7.7.5",
+    "@babel/core": "^7.7.5",
+    "@babel/node": "^7.7.4",
+    "@babel/preset-env": "^7.7.6",
+    "@babel/register": "^7.7.4",
+    "chai": "^4.2.0",
     "electron": "^6.0.3",
     "electron-builder": "^21.2.0",
-    "foreman": "^3.0.1"
+    "foreman": "^3.0.1",
+    "mocha": "^6.2.2"
   },
   "dependencies": {
     "bootstrap": "^4.3.1",
@@ -13,14 +20,14 @@
     "react-bootstrap": "^1.0.0-beta.12",
     "react-bootstrap-table-next": "^3.2.1",
     "react-dom": "^16.9.0",
-    "react-scripts": "3.1.1",
+    "react-scripts": "^3.3.0",
     "react-splitter-layout": "^4.0.0"
   },
   "main": "src/main.js",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "mocha --require @babel/register",
     "eject": "react-scripts eject",
     "electron": "electron .",
     "dev": "nf start -p 3000"
